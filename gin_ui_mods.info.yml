@@ -1,0 +1,5 @@
+name: Gin UI Mods
+type: module
+description: Small UI tweaks for the Gin admin theme.
+core_version_requirement: ^11
+package: Custom

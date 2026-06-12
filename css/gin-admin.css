@@ -1,0 +1,118 @@
+/* adds striping */
+body.gin--horizontal-toolbar .views-table tbody tr:nth-child(odd),
+body.gin--vertical-toolbar .views-table tbody tr:nth-child(odd),
+body.gin-admin .views-table tbody tr:nth-child(odd),
+body .views-table tbody tr:nth-child(odd) {
+    background-image: linear-gradient(
+        135deg,
+        #99999927 4.55%,
+        #ffffff00 4.55%,
+        #ffffff00 50%,
+        #99999927 50%,
+        #99999927 54.55%,
+        #ffffff00 54.55%,
+        #ffffff00 100%
+        ) !important;
+    background-size: 9.90px 9.90px !important;
+}
+
+/* removes overview link */
+.gin--vertical-toolbar .toolbar-menu > .menu-item-title + .menu-item,
+.gin--horizontal-toolbar .toolbar-menu > .menu-item-title + .menu-item {
+    display: none !important;
+}
+
+/* adds padding for submenu icons and fixes spacing */
+.toolbar-menu-administration > .toolbar-menu > .menu-item .toolbar-menu .menu-item .toolbar-icon svg {
+    margin-right: 10px;
+}
+
+.toolbar-menu-administration > .toolbar-menu > .menu-item .toolbar-menu .menu-item .toolbar-icon {
+    display: flex !important;
+    align-items: center;
+}
+
+.gin-ui-mods-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.gin-ui-mods-result-summary {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--gin-color-border, #d9dce7);
+  border-radius: 9999px;
+  background: var(--gin-bg-layer, #f6f7fb);
+  color: var(--gin-color-text, #6b7280);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.gin-ui-mods-add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--gin-color-primary, #3858e9);
+  color: #fff !important;
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.gin-ui-mods-add-button::before {
+  content: "+";
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-right: 0.45rem;
+      margin-bottom: 2px;
+}
+
+.gin-ui-mods-add-button:hover,
+.gin-ui-mods-add-button:focus {
+  filter: brightness(0.95);
+  text-decoration: none;
+}
+
+.gin-ui-mods-empty {
+  color: var(--gin-color-text, #6b7280);
+  opacity: 0.4;
+  font-style: italic;
+}
+
+body:not([data-toolbar-menu="open"]) .toolbar-logo {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: none;
+}
+
+body:not([data-toolbar-menu="open"]) .toolbar-logo img {
+  display: block;
+  max-height: 28px;
+  width: auto;
+  opacity: 1;
+  visibility: visible;
+}
+
+body[data-toolbar-menu="open"] .toolbar-logo {
+    display: inline-block;
+    background: url('/sites/default/files/logohorigray.png') no-repeat left center;
+    background-size: contain;
+    width: 90px;
+    height: auto;
+    margin: 5px auto 20px auto;
+    background-color: transparent !important;
+}
+
+body[data-toolbar-menu="open"] .toolbar-logo img {
+  opacity: 0;
+  visibility: hidden;
+}

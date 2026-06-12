@@ -1,0 +1,41 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
+/**
+ * @file
+ * Gin UI Mods module.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function gin_ui_mods_page_attachments(array &$attachments): void {
+  $admin_context = \Drupal::service('router.admin_context');
+
+  if ($admin_context->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 'gin_ui_mods/sidebar_default_open';
+    $attachments['#attached']['library'][] = 'gin_ui_mods/gin_admin';
+    $attachments['#attached']['library'][] = 'gin_ui_mods/user_menu_labels';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the user login form.
+ */
+function gin_ui_mods_form_user_login_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+  $form['#submit'][] = 'gin_ui_mods_user_login_form_submit';
+}
+
+/**
+ * Custom submit handler for login redirect.
+ */
+function gin_ui_mods_user_login_form_submit(array &$form, FormStateInterface $form_state): void {
+  $request = \Drupal::request();
+  $destination = $request->query->get('destination') ?: $request->request->get('destination');
+
+  if (empty($destination)) {
+    $form_state->setRedirectUrl(Url::fromUserInput('/admin/mycontent'));
+  }
+}

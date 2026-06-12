@@ -1,0 +1,19 @@
+sidebar_default_open:
+  version: 1.x
+  js:
+    js/gin-sidebar-default-open.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+gin_admin:
+  css:
+    theme:
+      css/gin-admin.css: {}
+
+user_menu_labels:
+  js:
+    js/gin-relabel-usermenu.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
