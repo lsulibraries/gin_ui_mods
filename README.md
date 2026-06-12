@@ -34,7 +34,7 @@ The module structure includes metadata, library definitions, JavaScript behavior
 
 ## Installation
 
-1. Place the module in your Drupal codebase under `web/modules/custom/gin_ui_mods` or the equivalent custom modules directory for your project.
+1. Place the module in your Drupal codebase under `web/modules/custom/` or the equivalent custom modules directory for your project.
 2. Make sure the Gin admin theme is installed and in use where these UI changes are expected, because the module is designed around Gin admin markup and behavior.[file:1][file:4][file:5][file:6]
 3. Enable the module with Drush (`drush en gin_ui_mods`) or through Drupal’s Extend page.
 4. Clear caches after enabling so the module’s libraries and theme-layer changes are rebuilt.
