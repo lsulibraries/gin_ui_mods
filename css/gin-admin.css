@@ -117,7 +117,7 @@ body[data-toolbar-menu="open"] .toolbar-logo img {
   visibility: hidden;
 }
 
-body.path-admin .views-field .marker {
+body.path-admin .views-field.views-field-field-record-type .marker {
   width: min-content;
 }
 
