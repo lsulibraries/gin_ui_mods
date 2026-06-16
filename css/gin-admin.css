@@ -125,3 +125,11 @@ body.path-admin .views-field .marker.marker--published {
   background: var(--gin-color-primary);
   color: var(--gin-color-button-text);
 }
+
+body.path-admin .views-field .marker.marker--date {
+  white-space: nowrap;
+}
+
+body.path-admin .views-field .marker .submarker--time {
+  opacity: 0.7;
+}
