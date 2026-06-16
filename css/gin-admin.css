@@ -116,3 +116,7 @@ body[data-toolbar-menu="open"] .toolbar-logo img {
   opacity: 0;
   visibility: hidden;
 }
+
+body.gin-admin span.marker {
+  width: min-content;
+}
