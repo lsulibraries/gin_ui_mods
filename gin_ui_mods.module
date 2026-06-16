@@ -39,3 +39,40 @@ function gin_ui_mods_user_login_form_submit(array &$form, FormStateInterface $fo
     $form_state->setRedirectUrl(Url::fromUserInput('/admin/mycontent'));
   }
 }
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms.
+ *
+ * Adds staff profile best practices message on staff node add/edit.
+ */
+function gin_ui_mods_form_node_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+  $node = $form_state->getFormObject()->getEntity();
+
+  // Only act on the "staff" content type.
+  if ($node->bundle() !== 'staff') {
+    return;
+  }
+
+  // Optional: only for authenticated users (usually true on admin anyway).
+  if (!\Drupal::currentUser()->isAuthenticated()) {
+    return;
+  }
+
+  $message = t('
+    <strong>Staff Profile Page Best Practices</strong><br>
+    <ul>
+      <li><strong>Required:</strong> job title, department/unit, brief description of responsibilities, and contact methods (LSU phone/email).</li>
+      <li>Optional: education, research interests, and publications sections.</li>
+      <li>Use a professional headshot (contact LSU Libraries’ comms team to schedule a photo if needed).</li>
+      <li>Use official LSU email and department affiliation only.</li>
+      <li>No personal contact details (personal phone numbers, home address, personal email).</li>
+      <li>Keep content professional and job-related.</li>
+      <li>Do not list personal social media or personal websites.</li>
+      <li>No external links outside of lsu.edu.</li>
+      <li>No file uploads or downloadable file links.</li>
+    </ul>
+  ');
+
+  // Drupal 11: use the messenger service, not drupal_set_message().
+  \Drupal::messenger()->addWarning($message);
+}
