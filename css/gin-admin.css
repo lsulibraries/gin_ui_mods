@@ -127,7 +127,9 @@ body.path-admin .views-field .marker.marker--published {
 }
 
 body.path-admin .views-field .marker.marker--date {
-  white-space: nowrap;
+    white-space: nowrap;
+    background: var(--gin-bg-layer);
+    border: 1px solid var(--gin-border-color-form-element);
 }
 
 body.path-admin .views-field .marker .submarker--time {
