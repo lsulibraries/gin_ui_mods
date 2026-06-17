@@ -2,22 +2,36 @@
   Drupal.behaviors.ginUiModsSidebarDefaultOpen = {
     attach(context) {
       once('gin-ui-mods-sidebar-default-open', 'body', context).forEach(() => {
-        const body = document.body;
+        const params = new URLSearchParams(window.location.search);
+        const isInitialLogin = params.get('check_logged_in') === '1';
 
-        const toggle = document.querySelector(
-          '[data-drupal-selector="toolbar-icon-menu"], .toolbar-icon-menu, .gin-toolbar-toggle'
-        );
-
-        const isCollapsed =
-          body.classList.contains('toolbar-vertical-collapsed') ||
-          body.classList.contains('gin--navigation-collapsed') ||
-          body.classList.contains('gin-sidebar-open') === false;
-
-        if (toggle && isCollapsed) {
-          window.requestAnimationFrame(() => {
-            toggle.click();
-          });
+        if (!isInitialLogin) {
+          return;
         }
+
+        document.cookie = 'Drupal.toolbar.collapsed=0; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+
+        let tries = 0;
+        const maxTries = 20;
+
+        const ensureExpanded = () => {
+          const body = document.body;
+          const trigger = document.querySelector('.toolbar-menu__trigger');
+          const isOpen = body.dataset.toolbarMenu === 'open';
+
+          if (!trigger) {
+            if (tries++ < maxTries) {
+              setTimeout(ensureExpanded, 150);
+            }
+            return;
+          }
+
+          if (!isOpen) {
+            trigger.click();
+          }
+        };
+
+        setTimeout(ensureExpanded, 150);
       });
     }
   };
