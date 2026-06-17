@@ -1,0 +1,9 @@
+gin_ui_mods.set_theme_mode:
+  path: '/admin/gin-ui-mods/theme-mode/{mode}'
+  defaults:
+    _controller: '\Drupal\gin_ui_mods\Controller\GinThemeModeController::setMode'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    _csrf_request_header_token: 'TRUE'
+    mode: '0|1|auto'
+  methods: [POST]

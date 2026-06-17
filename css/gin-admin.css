@@ -137,3 +137,32 @@ body.path-admin .views-field .marker .submarker--time,
 body.path-user .views-field .marker .submarker--time {
   opacity: 0.7;
 }
+
+.gin-theme-toggle-item .gin-theme-toggle {
+  width: 100%;
+  text-align: left;
+}
+
+/* removes default icon*/
+li.menu-item.gin-theme-toggle-item ::before {
+    display: none;
+}
+
+.gin-theme-toggle {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  padding-left: 2.5em;
+  color: var(--gin-color-text);
+}
+
+.gin-theme-toggle svg {
+  width: var(--gin-icon-size-toolbar);
+  height: var(--gin-icon-size-toolbar);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+  left: 0.6667em;
+  pointer-events: none;
+  fill: currentColor;
+}

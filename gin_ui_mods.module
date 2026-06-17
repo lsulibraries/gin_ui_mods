@@ -2,6 +2,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\user\Entity\User;
 
 /**
  * @file
@@ -11,27 +12,46 @@ use Drupal\Core\Url;
 /**
  * Implements hook_page_attachments().
  */
-function gin_ui_mods_page_attachments(array &$attachments): void {
+function gin_ui_mods_page_attachments(array &$attachments): void
+{
   $admin_context = \Drupal::service('router.admin_context');
 
   if ($admin_context->isAdminRoute()) {
     $attachments['#attached']['library'][] = 'gin_ui_mods/sidebar_default_open';
     $attachments['#attached']['library'][] = 'gin_ui_mods/gin_admin';
     $attachments['#attached']['library'][] = 'gin_ui_mods/user_menu_labels';
+    $attachments['#attached']['library'][] = 'gin_ui_mods/sidebar_theme_toggle';
+
+    // Temporary debug: expose likely Gin user preference storage to JS console.
+    $current_user = \Drupal::currentUser();
+    $uid = (int) $current_user->id();
+    $user = User::load($uid);
+    $user_data = \Drupal::service('user.data');
+    $gin_data = $user_data->get('gin', $uid);
+
+    $attachments['#attached']['drupalSettings']['ginUiModsDebugStorage'] = [
+      'uid' => $uid,
+      'user_data_gin' => $gin_data,
+      'user_data_gin_keys' => is_array($gin_data) ? array_keys($gin_data) : [],
+      'user_data_gin_toolbar' => $user_data->get('gin_toolbar', $uid),
+      'user_entity_keys' => $user ? array_keys($user->toArray()) : [],
+    ];
   }
 }
 
 /**
  * Implements hook_form_FORM_ID_alter() for the user login form.
  */
-function gin_ui_mods_form_user_login_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+function gin_ui_mods_form_user_login_form_alter(array &$form, FormStateInterface $form_state, $form_id): void
+{
   $form['#submit'][] = 'gin_ui_mods_user_login_form_submit';
 }
 
 /**
  * Custom submit handler for login redirect.
  */
-function gin_ui_mods_user_login_form_submit(array &$form, FormStateInterface $form_state): void {
+function gin_ui_mods_user_login_form_submit(array &$form, FormStateInterface $form_state): void
+{
   $request = \Drupal::request();
   $destination = $request->query->get('destination') ?: $request->request->get('destination');
 
@@ -41,19 +61,62 @@ function gin_ui_mods_user_login_form_submit(array &$form, FormStateInterface $fo
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter() for the user edit form.
+ */
+function gin_ui_mods_form_user_form_alter(array &$form, FormStateInterface $form_state, $form_id): void
+{
+  $form['#after_build'][] = 'gin_ui_mods_user_form_after_build';
+}
+
+/**
+ * Final user form cleanup after Gin adds its settings.
+ */
+function gin_ui_mods_user_form_after_build(array $form, FormStateInterface $form_state): array
+{
+  if (!isset($form['gin_theme_settings'])) {
+    return $form;
+  }
+
+  // Turn on per-user Gin overrides by default.
+  if (isset($form['gin_theme_settings']['enable_user_settings'])) {
+    $form['gin_theme_settings']['enable_user_settings']['#default_value'] = 1;
+    $form['gin_theme_settings']['enable_user_settings']['#value'] = 1;
+  }
+
+  // Keep only the options you want in Gin per-user settings.
+  if (isset($form['gin_theme_settings']['user_settings'])) {
+    $allowed = [
+      'enable_darkmode',
+      'preset_accent_color',
+      'accent_group',
+    ];
+
+    foreach (array_keys($form['gin_theme_settings']['user_settings']) as $key) {
+      if (strpos((string) $key, '#') === 0) {
+        continue;
+      }
+
+      if (!in_array($key, $allowed, TRUE)) {
+        unset($form['gin_theme_settings']['user_settings'][$key]);
+      }
+    }
+  }
+  return $form;
+}
+
+/**
  * Implements hook_form_BASE_FORM_ID_alter() for node forms.
  *
  * Adds staff profile best practices message on staff node add/edit.
  */
-function gin_ui_mods_form_node_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+function gin_ui_mods_form_node_form_alter(array &$form, FormStateInterface $form_state, $form_id): void
+{
   $node = $form_state->getFormObject()->getEntity();
 
-  // Only act on the "staff" content type.
   if ($node->bundle() !== 'staff') {
     return;
   }
 
-  // Optional: only for authenticated users (usually true on admin anyway).
   if (!\Drupal::currentUser()->isAuthenticated()) {
     return;
   }
@@ -72,6 +135,5 @@ function gin_ui_mods_form_node_form_alter(array &$form, FormStateInterface $form
     </ul>
   ');
 
-  // Drupal 11: use the messenger service, not drupal_set_message().
   \Drupal::messenger()->addWarning($message);
 }
