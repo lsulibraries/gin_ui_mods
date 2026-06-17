@@ -62,14 +62,13 @@ function gin_ui_mods_form_node_form_alter(array &$form, FormStateInterface $form
     <strong>Staff Profile Page Best Practices</strong><br>
     <ul>
       <li><strong>Required:</strong> job title, department/unit, brief description of responsibilities, and contact methods (LSU phone/email).</li>
-      <li>Optional: education, research interests, and publications sections.</li>
+      <li>Optional: education, research interests, and publications (include DOIs where available).</li>
       <li>Use a professional headshot (contact LSU Libraries’ comms team to schedule a photo if needed).</li>
-      <li>Use official LSU email and department affiliation only.</li>
+      <li>Use only official LSU email and department affiliation.</li>
       <li>No personal contact details (personal phone numbers, home address, personal email).</li>
-      <li>Keep content professional and job-related.</li>
+      <li>Keep all content professional and job-related.</li>
       <li>Do not list personal social media or personal websites.</li>
-      <li>No external links outside of lsu.edu.</li>
-      <li>No file uploads or downloadable file links.</li>
+      <li>External links must be professional and job-related (for example, publications or official profiles) and should meet LSU accessibility standards.</li>
     </ul>
   ');
 
