@@ -87,34 +87,39 @@ body .views-table tbody tr:nth-child(odd) {
   font-style: italic;
 }
 
-body:not([data-toolbar-menu="open"]) .toolbar-logo {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  background: none;
+ul.toolbar-menu:is([data-once="toolbar-menu-horizontal"]) > li {
+    margin: 0 auto;
 }
 
-body:not([data-toolbar-menu="open"]) .toolbar-logo img {
+.toolbar-logo {
   display: block;
-  max-height: 28px;
-  width: auto;
+  height: 28px;
+  overflow: hidden;
+  background: none !important;
+  margin: 5px 0 20px 0;
+}
+
+.toolbar-logo img {
+  display: block;
+  width: 90px;
+  max-width: none;
+  height: 28px;
+  object-fit: none;
+  object-position: left center;
   opacity: 1;
   visibility: visible;
 }
 
-body[data-toolbar-menu="open"] .toolbar-logo {
-    display: inline-block;
-    background: url('/sites/default/files/logohorigray.png') no-repeat left center;
-    background-size: contain;
-    width: 90px;
-    height: auto;
-    margin: 5px auto 20px auto;
-    background-color: transparent !important;
+body:not([data-toolbar-menu="open"]) .toolbar-logo {
+  /* styles when not open */
 }
 
-body[data-toolbar-menu="open"] .toolbar-logo img {
-  opacity: 0;
-  visibility: hidden;
+body.gin--vertical-toolbar .toolbar .toolbar-bar #toolbar-item-administration-tray a.toolbar-logo {
+
+}
+
+body.gin--vertical-toolbar .toolbar .toolbar-bar #toolbar-item-administration-tray .toolbar-logo img {
+    max-width: calc(var(--gin-toolbar-width) - 130px);
 }
 
 body.path-admin .views-field.views-field-field-record-type .marker,

@@ -15,37 +15,58 @@
           return;
         }
 
-        const existing = menu.querySelector('.gin-theme-toggle-item');
-        if (existing) {
-          return;
+        const findExistingDarkModeItem = () => {
+          return Array.from(menu.querySelectorAll('li.menu-item')).find((item) => {
+            const text = item.textContent.replace(/\s+/g, ' ').trim();
+            return text === 'Dark mode';
+          });
+        };
+
+        let li = menu.querySelector('.gin-theme-toggle-item') || findExistingDarkModeItem();
+        let button = li?.querySelector('button.gin-theme-toggle');
+
+        if (!li) {
+          li = document.createElement('li');
+          li.className = 'menu-item';
+          menu.insertBefore(li, logoutItem);
         }
 
-        const li = document.createElement('li');
-        li.className = 'menu-item gin-theme-toggle-item';
+        li.classList.add('gin-theme-toggle-item', 'menu-item');
 
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'toolbar-icon toolbar-button--icon custom-toolbar-icon gin-theme-toggle';
-        button.setAttribute('aria-label', 'Dark theme');
+        if (!button) {
+          li.textContent = '';
 
-        const svgNS = 'http://www.w3.org/2000/svg';
+          button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'toolbar-icon toolbar-button--icon custom-toolbar-icon gin-theme-toggle';
+          button.setAttribute('aria-label', 'Dark mode');
 
-        const icon = document.createElementNS(svgNS, 'svg');
-        icon.setAttribute('xmlns', svgNS);
-        icon.setAttribute('viewBox', '0 0 16 16');
-        icon.setAttribute('width', '16');
-        icon.setAttribute('height', '16');
-        icon.setAttribute('fill', 'currentColor');
-        icon.setAttribute('aria-hidden', 'true');
-        icon.classList.add('bi', 'gin-theme-toggle-icon');
+          const svgNS = 'http://www.w3.org/2000/svg';
 
-        const path = document.createElementNS(svgNS, 'path');
-        icon.appendChild(path);
+          const icon = document.createElementNS(svgNS, 'svg');
+          icon.setAttribute('xmlns', svgNS);
+          icon.setAttribute('viewBox', '0 0 16 16');
+          icon.setAttribute('width', '16');
+          icon.setAttribute('height', '16');
+          icon.setAttribute('fill', 'currentColor');
+          icon.setAttribute('aria-hidden', 'true');
+          icon.classList.add('bi', 'gin-theme-toggle-icon');
 
-        button.appendChild(icon);
-        button.appendChild(document.createTextNode('Dark mode'));
+          const path = document.createElementNS(svgNS, 'path');
+          icon.appendChild(path);
 
+          button.appendChild(icon);
+          button.appendChild(document.createTextNode('Dark mode'));
+          li.appendChild(button);
+        }
+
+        const icon = button.querySelector('.gin-theme-toggle-icon');
+        const path = icon?.querySelector('path');
         const root = document.documentElement;
+
+        if (!icon || !path) {
+          return;
+        }
 
         const isDarkMode = () => root.classList.contains('gin--dark-mode');
 
@@ -67,50 +88,49 @@
           }
         };
 
-        const applyMode = (mode) => {
-          root.classList.toggle('gin--dark-mode', mode === '1');
-          syncState();
-        };
+        if (!button.dataset.ginThemeToggleBound) {
+          button.dataset.ginThemeToggleBound = 'true';
 
-        button.addEventListener('click', async () => {
-          const next = isDarkMode() ? '0' : '1';
-          const previous = isDarkMode() ? '1' : '0';
+          button.addEventListener('click', async () => {
+            const next = isDarkMode() ? '0' : '1';
+            const previous = isDarkMode() ? '1' : '0';
 
-          applyMode(next);
+            root.classList.toggle('gin--dark-mode', next === '1');
+            syncState();
 
-          try {
-            const tokenResponse = await fetch('/session/token', {
-              credentials: 'same-origin',
-            });
+            try {
+              const tokenResponse = await fetch('/session/token', {
+                credentials: 'same-origin',
+              });
 
-            if (!tokenResponse.ok) {
-              throw new Error(`Token HTTP ${tokenResponse.status}`);
+              if (!tokenResponse.ok) {
+                throw new Error(`Token HTTP ${tokenResponse.status}`);
+              }
+
+              const csrfToken = await tokenResponse.text();
+
+              const response = await fetch(`/admin/gin-ui-mods/theme-mode/${next}`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest',
+                  'X-CSRF-Token': csrfToken,
+                },
+              });
+
+              if (!response.ok) {
+                throw new Error(`Save HTTP ${response.status}`);
+              }
             }
-
-            const csrfToken = await tokenResponse.text();
-
-            const response = await fetch(`/admin/gin-ui-mods/theme-mode/${next}`, {
-              method: 'POST',
-              credentials: 'same-origin',
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-Token': csrfToken,
-              },
-            });
-
-            if (!response.ok) {
-              throw new Error(`Save HTTP ${response.status}`);
+            catch (error) {
+              root.classList.toggle('gin--dark-mode', previous === '1');
+              syncState();
+              console.error('Unable to save Gin theme mode.', error);
             }
-          }
-          catch (error) {
-            applyMode(previous);
-            console.error('Unable to save Gin theme mode.', error);
-          }
-        });
+          });
+        }
 
         syncState();
-        li.appendChild(button);
-        menu.insertBefore(li, logoutItem);
       });
     },
   };
