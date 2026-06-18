@@ -23,7 +23,7 @@
         };
 
         let li = menu.querySelector('.gin-theme-toggle-item') || findExistingDarkModeItem();
-        let button = li?.querySelector('button.gin-theme-toggle');
+        let link = li?.querySelector('a.gin-theme-toggle');
 
         if (!li) {
           li = document.createElement('li');
@@ -33,13 +33,13 @@
 
         li.classList.add('gin-theme-toggle-item', 'menu-item');
 
-        if (!button) {
+        if (!link) {
           li.textContent = '';
 
-          button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'toolbar-icon toolbar-button--icon custom-toolbar-icon gin-theme-toggle';
-          button.setAttribute('aria-label', 'Dark mode');
+          link = document.createElement('a');
+          link.href = '#';
+          link.className = 'toolbar-icon toolbar-button--icon custom-toolbar-icon gin-theme-toggle';
+          link.setAttribute('aria-label', 'Dark mode');
 
           const svgNS = 'http://www.w3.org/2000/svg';
 
@@ -55,12 +55,12 @@
           const path = document.createElementNS(svgNS, 'path');
           icon.appendChild(path);
 
-          button.appendChild(icon);
-          button.appendChild(document.createTextNode('Dark mode'));
-          li.appendChild(button);
+          link.appendChild(icon);
+          link.appendChild(document.createTextNode('Dark mode'));
+          li.appendChild(link);
         }
 
-        const icon = button.querySelector('.gin-theme-toggle-icon');
+        const icon = link.querySelector('.gin-theme-toggle-icon');
         const path = icon?.querySelector('path');
         const root = document.documentElement;
 
@@ -73,8 +73,8 @@
         const syncState = () => {
           const isDark = isDarkMode();
 
-          button.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-          button.setAttribute('aria-label', 'Dark mode');
+          link.setAttribute('aria-label', 'Dark mode');
+          link.setAttribute('aria-current', isDark ? 'true' : 'false');
 
           if (isDark) {
             icon.classList.remove('bi-toggle-off');
@@ -88,10 +88,12 @@
           }
         };
 
-        if (!button.dataset.ginThemeToggleBound) {
-          button.dataset.ginThemeToggleBound = 'true';
+        if (!link.dataset.ginThemeToggleBound) {
+          link.dataset.ginThemeToggleBound = 'true';
 
-          button.addEventListener('click', async () => {
+          link.addEventListener('click', async (event) => {
+            event.preventDefault();
+
             const next = isDarkMode() ? '0' : '1';
             const previous = isDarkMode() ? '1' : '0';
 
