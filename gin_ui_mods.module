@@ -44,6 +44,57 @@ function gin_ui_mods_page_attachments(array &$attachments): void
  */
 function gin_ui_mods_form_user_login_form_alter(array &$form, FormStateInterface $form_state, $form_id): void
 {
+  // Ensure the more-links container exists (gin_login creates this, but be safe).
+  if (!isset($form['more-links'])) {
+    $form['more-links'] = [
+      '#type' => 'container',
+      '#weight' => 99,
+      '#attributes' => ['class' => ['more-links']],
+    ];
+  }
+
+  // myLSU link.
+  $form['more-links']['gin_ui_mods_mylsu_link'] = [
+    '#type' => 'link',
+    '#title' => t('myLSU'),
+    '#url' => Url::fromUri('https://my.lsu.edu/'),
+    '#attributes' => [
+      'class' => ['link', 'link--more', 'gin-ui-mods-mylsu-link'],
+      'target' => '_blank',
+      'rel' => 'noopener noreferrer',
+    ],
+    '#weight' => 10,
+  ];
+
+  // Springshare link.
+  $form['more-links']['gin_ui_mods_back_link'] = [
+    '#type' => 'link',
+    '#title' => t('Springshare'),
+    '#url' => Url::fromUri('https://lsu.libapps.com/libapps/login.php?site_id=5512'),
+    '#attributes' => [
+      'class' => ['link', 'link--more', 'gin-ui-mods-mylsu-link'],
+      'target' => '_blank',
+      'rel' => 'noopener noreferrer',
+    ],
+    '#weight' => 11,
+  ];
+
+    // Springshare link.
+  $form['more-links']['gin_ui_mods_Sharepoint_link'] = [
+    '#type' => 'link',
+    '#title' => t('Sharepoint'),
+    '#url' => Url::fromUri('https://lsumail2.sharepoint.com/sites/Team-LIB/SitePages/Home6.aspx'),
+    '#attributes' => [
+      'class' => ['link', 'link--more', 'gin-ui-mods-mylsu-link'],
+      'target' => '_blank',
+      'rel' => 'noopener noreferrer',
+    ],
+    '#weight' => 11,
+  ];
+
+
+  // Optionally attach a login-specific library for CSS.
+  $form['#attached']['library'][] = 'gin_ui_mods/login';
   $form['#submit'][] = 'gin_ui_mods_user_login_form_submit';
 }
 

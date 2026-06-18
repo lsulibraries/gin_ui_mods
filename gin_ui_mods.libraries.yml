@@ -24,3 +24,8 @@ sidebar_theme_toggle:
   dependencies:
     - core/drupal
     - core/once
+
+login:
+  css:
+    theme:
+      css/gin-login.css: {}
