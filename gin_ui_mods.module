@@ -15,15 +15,20 @@ use Drupal\user\Entity\User;
 function gin_ui_mods_page_attachments(array &$attachments): void
 {
   $admin_context = \Drupal::service('router.admin_context');
+  $current_user = \Drupal::currentUser();
+  $config = \Drupal::config('system.theme');
 
-  if ($admin_context->isAdminRoute()) {
+  $admin_theme = (string) $config->get('admin');
+  $is_admin_route = $admin_context->isAdminRoute();
+  $is_gin_context = $admin_theme === 'gin' && $current_user->isAuthenticated();
+
+  if ($is_admin_route || $is_gin_context) {
     $attachments['#attached']['library'][] = 'gin_ui_mods/sidebar_default_open';
     $attachments['#attached']['library'][] = 'gin_ui_mods/gin_admin';
     $attachments['#attached']['library'][] = 'gin_ui_mods/user_menu_labels';
     $attachments['#attached']['library'][] = 'gin_ui_mods/sidebar_theme_toggle';
 
     // Temporary debug: expose likely Gin user preference storage to JS console.
-    $current_user = \Drupal::currentUser();
     $uid = (int) $current_user->id();
     $user = User::load($uid);
     $user_data = \Drupal::service('user.data');
@@ -31,6 +36,9 @@ function gin_ui_mods_page_attachments(array &$attachments): void
 
     $attachments['#attached']['drupalSettings']['ginUiModsDebugStorage'] = [
       'uid' => $uid,
+      'admin_theme' => $admin_theme,
+      'is_admin_route' => $is_admin_route,
+      'is_gin_context' => $is_gin_context,
       'user_data_gin' => $gin_data,
       'user_data_gin_keys' => is_array($gin_data) ? array_keys($gin_data) : [],
       'user_data_gin_toolbar' => $user_data->get('gin_toolbar', $uid),

@@ -87,8 +87,8 @@ body .views-table tbody tr:nth-child(odd) {
   font-style: italic;
 }
 
-ul.toolbar-menu:is([data-once="toolbar-menu-horizontal"]) > li {
-    margin: 0 auto;
+ul.toolbar-menu > li .toolbar-logo {
+    justify-items: center;
 }
 
 .toolbar-logo {
@@ -99,7 +99,7 @@ ul.toolbar-menu:is([data-once="toolbar-menu-horizontal"]) > li {
   margin: 5px 0 20px 0;
 }
 
-.toolbar-logo img {
+/* .toolbar-logo img {
   display: block;
   width: 90px;
   max-width: none;
@@ -108,7 +108,7 @@ ul.toolbar-menu:is([data-once="toolbar-menu-horizontal"]) > li {
   object-position: left center;
   opacity: 1;
   visibility: visible;
-}
+} */
 
 body:not([data-toolbar-menu="open"]) .toolbar-logo {
   /* styles when not open */
