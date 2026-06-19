@@ -59,9 +59,9 @@ body .views-table tbody tr:nth-child(odd) {
   padding: 0.55rem 0.9rem;
   border-radius: 0.5rem;
   background: var(--gin-color-primary, #3858e9);
-  color: #fff !important;
+  color: var(--gin-color-button-text, #ffffff) !important;
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: 0.875rem; 
   line-height: 1.1;
   white-space: nowrap;
 }
