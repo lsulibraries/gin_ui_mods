@@ -29,3 +29,14 @@ login:
   css:
     theme:
       css/gin-login.css: {}
+
+flag_review_icon:
+  version: 1.0.0
+  css:
+    theme:
+      css/gin-flag-review-icon.css: {}
+  js:
+    js/gin-flag-review-icon.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

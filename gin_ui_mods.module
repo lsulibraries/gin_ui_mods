@@ -27,6 +27,7 @@ function gin_ui_mods_page_attachments(array &$attachments): void
     $attachments['#attached']['library'][] = 'gin_ui_mods/gin_admin';
     $attachments['#attached']['library'][] = 'gin_ui_mods/user_menu_labels';
     $attachments['#attached']['library'][] = 'gin_ui_mods/sidebar_theme_toggle';
+    $attachments['#attached']['library'][] = 'gin_ui_mods/flag_review_icon';
 
     // Temporary debug: expose likely Gin user preference storage to JS console.
     $uid = (int) $current_user->id();
@@ -78,7 +79,7 @@ function gin_ui_mods_form_user_login_form_alter(array &$form, FormStateInterface
   $form['more-links']['gin_ui_mods_back_link'] = [
     '#type' => 'link',
     '#title' => t('Springshare'),
-    '#url' => Url::fromUri('https://lsu.libapps.com/libapps/login.php?site_id=5512'),
+    '#url' => Url::fromUri('https://lsu.libapps.com/libapps/login.php'),
     '#attributes' => [
       'class' => ['link', 'link--more', 'gin-ui-mods-mylsu-link'],
       'target' => '_blank',

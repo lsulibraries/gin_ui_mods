@@ -1,0 +1,120 @@
+td.views-field-link-flag {
+  white-space: nowrap;
+}
+
+td.views-field-link-flag .js-flag-message {
+  display: none;
+}
+
+td.views-field-link-flag a.review-toggle-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gin-border-color, var(--gin-color-border));
+  border-radius: var(--gin-border-radius, 5px);
+  background: var(--gin-bg-layer, var(--gin-color-background));
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, min-width 0.15s ease;
+}
+
+td.views-field-link-flag a.review-toggle-link:hover,
+td.views-field-link-flag a.review-toggle-link:focus {
+  background: var(--gin-color-primary-light, var(--gin-bg-item-hover));
+  border-color: var(--gin-color-primary);
+  color: var(--gin-color-primary);
+}
+
+td.views-field-link-flag .flag.flagged a.review-toggle-link,
+td.views-field-link-flag a.review-toggle-link.action-unflag,
+td.views-field-link-flag a.review-toggle-link.unflag-action,
+td.views-field-link-flag a.review-toggle-link[href*="/unflag"] {
+  background: var(--gin-color-primary);
+  border-color: var(--gin-color-primary);
+  color: var(--gin-color-button-text);
+}
+
+td.views-field-link-flag a.review-toggle-link .review-toggle__icon {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+td.views-field-link-flag a.action-unflag:hover .review-toggle__icon,
+td.views-field-link-flag a.action-unflag:focus .review-toggle__icon {
+  display: none;
+}
+
+td.views-field-link-flag a.action-unflag:hover::after,
+td.views-field-link-flag a.action-unflag:focus::after {
+  content: attr(data-flag-label);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.review-toggle .flag a:hover,
+.review-toggle .flag-action:hover {
+  background: var(--gin-bg-item-hover, var(--gin-color-primary-light));
+  border-color: var(--gin-color-primary);
+  color: var(--gin-color-primary);
+}
+
+.review-toggle .flag.flagged a,
+.review-toggle .flag-action.flagged, 
+.review-toggle .action-unflag a,
+.review-toggle .is-active a {
+  background: var(--gin-color-primary);
+  border-color: var(--gin-color-primary);
+  color: var(--gin-color-button-text);
+}
+
+.review-toggle .flag a,
+.review-toggle .flag-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+      height: 17px;
+    min-width: 30px;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--gin-border-color, var(--gin-color-border));
+  border-radius: var(--gin-border-radius, 5px);
+  background: var(--gin-bg-layer, var(--gin-color-background));
+  color: var(--gin-color-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.review-toggle .flag a:hover,
+.review-toggle .flag-action:hover {
+  background: var(--gin-bg-item-hover, var(--gin-color-primary-light));
+  border-color: var(--gin-color-primary);
+  color: var(--gin-color-primary);
+}
+
+.review-toggle .flag.flagged a,
+.review-toggle .flag-action.flagged,
+.review-toggle .is-active a {
+  background: var(--gin-color-primary);
+  border-color: var(--gin-color-primary);
+  color: var(--gin-color-button-text);
+}
+
+td.views-field-link-flag a.use-ajax {
+  position: relative;
+  font-size: 0;
+}
+
+td.views-field-link-flag a.use-ajax::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: currentColor;
+  -webkit-mask: url("/libraries/bootstrap-icons/icons/flag-fill.svg") no-repeat center / contain;
+  mask: url("/libraries/bootstrap-icons/icons/flag-fill.svg") no-repeat center / contain;
+}
