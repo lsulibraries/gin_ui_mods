@@ -184,7 +184,7 @@ li.menu-item.gin-theme-toggle-item ::before {
   border: 1px solid var(--gin-border-color, var(--gin-color-border));
   border-radius: 999px;
   background: var(--gin-bg-layer, var(--gin-color-background));
-  color: var(--gin-color-text);
+  color: var(--gin-color-primary);
   font-size: 0.78rem;
   font-weight: 600;
   line-height: 1.2;
