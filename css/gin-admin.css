@@ -173,3 +173,7 @@ li.menu-item.gin-theme-toggle-item ::before {
   pointer-events: none;
   fill: currentColor;
 }
+
+.gin--vertical-toolbar .entity-browser-browse-files-form .file-browser-actions.js-form-wrapper.form-wrapper {
+    position: relative;
+}
