@@ -1,5 +1,5 @@
 {
-    "name": "ktanglao/gin_ui_mods",
+    "name": "lsulibraries/gin_ui_mods",
     "description": "Custom Drupal module for Gin UI modifications.",
     "type": "drupal-custom-module",
     "license": "proprietary",
