@@ -1,0 +1,18 @@
+/**
+ * @file
+ * First-frame previews for local video media in the media library.
+ *
+ * Matches how Gin places the thumbnail image inside its padded preview box.
+ */
+
+.media-library-item__preview .gin-ui-mods-video-frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  background: var(--gin-ui-mods-video-fallback) center / contain no-repeat;
+  pointer-events: none;
+}

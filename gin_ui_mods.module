@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
@@ -196,4 +198,57 @@ function gin_ui_mods_form_node_form_alter(array &$form, FormStateInterface $form
   ');
 
   \Drupal::messenger()->addWarning($message);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for media entities.
+ *
+ * Local video files have no thumbnail of their own, so the media library
+ * (the field widget and the selection dialog) shows a generic file icon.
+ * Show the video's own first frame there instead: a muted, paused video
+ * that loads only its metadata. The generic icon stays behind it as a
+ * fallback for files the browser cannot decode.
+ */
+function gin_ui_mods_media_view(array &$build, EntityInterface $media, EntityViewDisplayInterface $display, string $view_mode): void
+{
+  if ($view_mode !== 'media_library' || !isset($build['thumbnail'][0])) {
+    return;
+  }
+
+  /** @var \Drupal\media\MediaInterface $media */
+  if ($media->getSource()->getPluginId() !== 'video_file') {
+    return;
+  }
+
+  $fid = $media->getSource()->getSourceFieldValue($media);
+  $file = $fid ? \Drupal::entityTypeManager()->getStorage('file')->load($fid) : NULL;
+  if (!$file) {
+    return;
+  }
+
+  $attributes = [
+    // The fragment asks Safari to paint a frame instead of a blank box.
+    'src' => $file->createFileUrl() . '#t=0.1',
+    'class' => ['gin-ui-mods-video-frame'],
+    'preload' => 'metadata',
+    'muted' => TRUE,
+    'playsinline' => TRUE,
+    'disablepictureinpicture' => TRUE,
+    'disableremoteplayback' => TRUE,
+    // Decorative: the file name is printed right below the preview.
+    'aria-hidden' => 'true',
+  ];
+
+  $icon = $media->get('thumbnail')->entity;
+  if ($icon) {
+    $attributes['style'] = '--gin-ui-mods-video-fallback: url("' . $icon->createFileUrl() . '");';
+  }
+
+  $build['thumbnail'][0] = [
+    '#type' => 'html_tag',
+    '#tag' => 'video',
+    '#attributes' => $attributes,
+    '#attached' => ['library' => ['gin_ui_mods/media_video_frame']],
+  ];
+  \Drupal::service('renderer')->addCacheableDependency($build, $file);
 }

@@ -12,6 +12,7 @@ Gin UI Mods is a custom Drupal 11 module for small interface tweaks in the Gin a
 - Redirects users to `/admin/mycontent` after login when no destination is provided.
 - Limits Gin per-user settings on the user edit form to dark mode and accent-color options, while enabling user settings by default.
 - Shows a staff profile best-practices warning on staff node add/edit forms.
+- Shows each local video's first frame in the media library (the field widget and the selection dialog) instead of the generic file icon.
 
 ## File structure
 
@@ -29,7 +30,8 @@ gin_ui_mods/
 │   ├── gin-sidebar-default-open.js
 │   └── gin-sidebar-theme-toggle.js
 └── css/
-    └── gin-admin.css
+    ├── gin-admin.css
+    └── gin-media-video-frame.css
 ```
 
 ## Libraries
@@ -42,6 +44,12 @@ The module defines these libraries:
 - `sidebar_theme_toggle`
 
 These libraries are attached on admin routes by `gin_ui_mods_page_attachments()`.
+
+`media_video_frame` is attached only where a video preview is drawn, by `gin_ui_mods_media_view()`.
+
+## Changelog
+
+- **2026-11-20:** Local video media show their first frame in the media library instead of the generic file icon, so editors can tell uploaded videos apart. The preview is a muted, paused `<video preload="metadata">` in the `media_library` view mode; the generic icon stays behind it for files the browser cannot decode.
 
 ## Theme mode route
 

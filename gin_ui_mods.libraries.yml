@@ -40,3 +40,8 @@ flag_review_icon:
   dependencies:
     - core/drupal
     - core/once
+media_video_frame:
+  version: 1.0.0
+  css:
+    theme:
+      css/gin-media-video-frame.css: {}
